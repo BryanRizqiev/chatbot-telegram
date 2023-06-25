@@ -53,20 +53,24 @@ bot.command("tiktokdl", limits, async (ctx) => {
       reply_to_message_id: ctx.message.message_id,
     });
 
-    const result = await performDownloadTask(api + "tiktokdl?url=" + ctx.match);
+    // Menjadwalkan tugas asinkron menggunakan setTimeout
+    setTimeout(async () => {
+      const result = await performDownloadTask(ctx.match);
 
-    if (result.success) {
-      let linkdl = result.data.downloadUrls[1];
-      await ctx.api.sendVideo(ctx.chat.id, new InputFile({ url: linkdl }), {
-        reply_to_message_id: ctx.message.message_id,
-      });
-      await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
-    } else {
-      await ctx.reply("Gagal mendownload, cek URL dan coba lagi.", {
-        reply_to_message_id: ctx.message.message_id,
-      });
-      await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
-    }
+      // Melanjutkan dengan tindakan lain setelah tugas selesai
+      if (result.success) {
+        let linkdl = result.data.downloadUrls[1];
+        await ctx.api.sendVideo(ctx.chat.id, new InputFile({ url: linkdl }), {
+          reply_to_message_id: ctx.message.message_id,
+        });
+        await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
+      } else {
+        await ctx.reply("Gagal mendownload, cek URL dan coba lagi.", {
+          reply_to_message_id: ctx.message.message_id,
+        });
+        await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
+      }
+    }, 0);
   } catch (error) {
     console.log(error);
     await ctx.reply("Terjadi error pada sistem.", {
