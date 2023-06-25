@@ -1,6 +1,7 @@
 require("dotenv").config();
 const { Bot, InputFile } = require("grammy");
 const { limit } = require("@grammyjs/ratelimiter");
+const { run } = require("@grammyjs/runner");
 const axios = require("axios");
 
 const { api, bot_token } = process.env;
@@ -107,6 +108,4 @@ bot.command("igdl", limits, async (ctx) => {
 });
 
 console.log("BOT STARTED");
-bot.start({
-  drop_pending_updates: true,
-});
+run(bot);
