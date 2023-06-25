@@ -1,5 +1,5 @@
 require("dotenv").config();
-const { Bot, InputFile } = require("grammy");
+const { Bot, InputFile, InlineKeyboard } = require("grammy");
 const { limit } = require("@grammyjs/ratelimiter");
 const { run } = require("@grammyjs/runner");
 const axios = require("axios");
@@ -19,18 +19,63 @@ let limits = limit({
   },
 });
 
+bot.on("callback_query:data", async (ctx) => {
+  let data = ctx.callbackQuery.data;
+  if (data === "information") {
+    await ctx.api.deleteMessage(
+      ctx.chat.id,
+      ctx.callbackQuery.message.message_id
+    );
+    await ctx.api.sendPhoto(
+      ctx.chat.id,
+      "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
+      {
+        caption: "Selamat Datang di ChatBot Telegram!",
+        parse_mode: "HTML",
+        reply_markup: new InlineKeyboard()
+          .text("Tentang", "about")
+          .text("Menu", "menu")
+          .row()
+          .text("Kembali", "back"),
+      }
+    );
+  }
+  if (data === "back") {
+    await ctx.api.deleteMessage(
+      ctx.chat.id,
+      ctx.callbackQuery.message.message_id
+    );
+    await ctx.api.sendPhoto(
+      ctx.chat.id,
+      "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
+      {
+        caption: "Selamat Datang di ChatBot Telegram!",
+        parse_mode: "HTML",
+        reply_markup: new InlineKeyboard()
+          .text("Informasi", "information")
+          .text("Tentang", "about")
+          .row()
+          .text("Menu", "menu"),
+      }
+    );
+  }
+});
+
 bot.command("start", limits, (ctx) => {
-  let menu = `
-  Selamat Datang! Berikut menu yang tersedia:
-<code>siapa nama(saya/ku)
-/tiktokdl (url)
-/igdl (url)
-  </code>
-  `;
-  ctx.reply(menu, {
-    reply_to_message_id: ctx.message.message_id,
-    parse_mode: "HTML",
-  });
+  ctx.api.sendPhoto(
+    ctx.chat.id,
+    "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
+    {
+      caption: "Selamat Datang di ChatBot Telegram!",
+      reply_to_message_id: ctx.message.message_id,
+      parse_mode: "HTML",
+      reply_markup: new InlineKeyboard()
+        .text("Informasi", "information")
+        .text("Tentang", "about")
+        .row()
+        .text("Menu", "menu"),
+    }
+  );
 });
 
 bot.hears(/^siapa nama(?:\s)?(saya|ku)$/i, limits, (ctx) => {
@@ -106,6 +151,8 @@ bot.command("igdl", limits, async (ctx) => {
     });
   }
 });
+
+bot.command("tr", async (ctx) => {});
 
 console.log("BOT STARTED");
 run(bot);
