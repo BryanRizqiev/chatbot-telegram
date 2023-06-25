@@ -53,19 +53,40 @@ bot.command("tiktokdl", limits, async (ctx) => {
       reply_to_message_id: ctx.message.message_id,
     });
 
-    let { data } = await axios(api + "tiktokdl?url=" + ctx.match);
-    if (data.success) {
-      let linkdl = data.data.downloadUrls[1];
-      await ctx.api.sendVideo(ctx.chat.id, new InputFile({ url: linkdl }), {
-        reply_to_message_id: ctx.message.message_id,
+    // let { data } = await axios(api + "tiktokdl?url=" + ctx.match);
+    // if (data.success) {
+    //   let linkdl = data.data.downloadUrls[1];
+    //   await ctx.api.sendVideo(ctx.chat.id, new InputFile({ url: linkdl }), {
+    //     reply_to_message_id: ctx.message.message_id,
+    //   });
+    //   await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
+    // } else {
+    //   await ctx.reply("Gagal mendownload, cek url dan coba lagi.", {
+    //     reply_to_message_id: ctx.message.message_id,
+    //   });
+    //   await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
+    // }
+
+    axios(api + "tiktokdl?url=" + ctx.match)
+      .then(async (response) => {
+        let { data } = response;
+        if (data.success) {
+          let linkdl = data.data.downloadUrls[1];
+          await ctx.api.sendVideo(ctx.chat.id, new InputFile({ url: linkdl }), {
+            reply_to_message_id: ctx.message.message_id,
+          });
+        } else {
+          await ctx.reply("Gagal mendownload, cek URL dan coba lagi.", {
+            reply_to_message_id: ctx.message.message_id,
+          });
+        }
+      })
+      .catch(async (error) => {
+        console.log(error);
+        await ctx.reply("Terjadi error pada sistem.", {
+          reply_to_message_id: ctx.message.message_id,
+        });
       });
-      await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
-    } else {
-      await ctx.reply("Gagal mendownload, cek url dan coba lagi.", {
-        reply_to_message_id: ctx.message.message_id,
-      });
-      await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
-    }
   } catch (error) {
     console.log(error);
     await ctx.reply("Terjadi error pada sistem.", {
