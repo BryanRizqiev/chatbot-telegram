@@ -18,7 +18,7 @@ let limits = limit({
   },
 });
 
-bot.command("start", limits, async (ctx) => {
+bot.command("start", limits, (ctx) => {
   let menu = `
   Selamat Datang! Berikut menu yang tersedia:
 <code>siapa nama(saya/ku)
@@ -26,7 +26,7 @@ bot.command("start", limits, async (ctx) => {
 /igdl (url)
   </code>
   `;
-  await ctx.api.sendMessage(ctx.chat.id, menu, {
+  ctx.api.sendMessage(ctx.chat.id, menu, {
     reply_to_message_id: ctx.message.message_id,
     parse_mode: "HTML",
   });
@@ -45,7 +45,7 @@ bot.hears(/^siapa nama(?:\s)?(saya|ku)$/i, limits, async (ctx) => {
 bot.command("tiktokdl", limits, async (ctx) => {
   try {
     if (!ctx.match)
-      return await ctx.reply("masukkan url tiktok", {
+      return await ctx.reply("Masukkan URL tiktok", {
         reply_to_message_id: ctx.message.message_id,
       });
 
@@ -53,40 +53,20 @@ bot.command("tiktokdl", limits, async (ctx) => {
       reply_to_message_id: ctx.message.message_id,
     });
 
-    // let { data } = await axios(api + "tiktokdl?url=" + ctx.match);
-    // if (data.success) {
-    //   let linkdl = data.data.downloadUrls[1];
-    //   await ctx.api.sendVideo(ctx.chat.id, new InputFile({ url: linkdl }), {
-    //     reply_to_message_id: ctx.message.message_id,
-    //   });
-    //   await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
-    // } else {
-    //   await ctx.reply("Gagal mendownload, cek url dan coba lagi.", {
-    //     reply_to_message_id: ctx.message.message_id,
-    //   });
-    //   await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
-    // }
+    const result = await performDownloadTask(api + "tiktokdl?url=" + ctx.match);
 
-    axios(api + "tiktokdl?url=" + ctx.match)
-      .then(async (response) => {
-        let { data } = response;
-        if (data.success) {
-          let linkdl = data.data.downloadUrls[1];
-          await ctx.api.sendVideo(ctx.chat.id, new InputFile({ url: linkdl }), {
-            reply_to_message_id: ctx.message.message_id,
-          });
-        } else {
-          await ctx.reply("Gagal mendownload, cek URL dan coba lagi.", {
-            reply_to_message_id: ctx.message.message_id,
-          });
-        }
-      })
-      .catch(async (error) => {
-        console.log(error);
-        await ctx.reply("Terjadi error pada sistem.", {
-          reply_to_message_id: ctx.message.message_id,
-        });
+    if (result.success) {
+      let linkdl = result.data.downloadUrls[1];
+      await ctx.api.sendVideo(ctx.chat.id, new InputFile({ url: linkdl }), {
+        reply_to_message_id: ctx.message.message_id,
       });
+      await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
+    } else {
+      await ctx.reply("Gagal mendownload, cek URL dan coba lagi.", {
+        reply_to_message_id: ctx.message.message_id,
+      });
+      await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
+    }
   } catch (error) {
     console.log(error);
     await ctx.reply("Terjadi error pada sistem.", {
@@ -94,6 +74,18 @@ bot.command("tiktokdl", limits, async (ctx) => {
     });
   }
 });
+
+async function performDownloadTask(url) {
+  return new Promise((resolve, reject) => {
+    axios(url)
+      .then((response) => {
+        resolve(response.data);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+}
 
 bot.command("igdl", limits, async (ctx) => {
   try {
@@ -106,15 +98,18 @@ bot.command("igdl", limits, async (ctx) => {
       reply_to_message_id: ctx.message.message_id,
     });
 
-    let { data } = await axios(api + "igreelsdl?url=" + ctx.match);
-    if (data.success) {
-      let linkdl = data.data.downloadUrl;
+    const result = await performDownloadTask(
+      api + "igreelsdl?url=" + ctx.match
+    );
+
+    if (result.success) {
+      let linkdl = result.data.downloadUrl;
       await ctx.api.sendVideo(ctx.chat.id, new InputFile({ url: linkdl }), {
         reply_to_message_id: ctx.message.message_id,
       });
       await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
     } else {
-      await ctx.reply("Gagal mendownload, cek url dan coba lagi.", {
+      await ctx.reply("Gagal mendownload, cek URL dan coba lagi.", {
         reply_to_message_id: ctx.message.message_id,
       });
       await ctx.api.deleteMessage(ctx.chat.id, download.message_id);
