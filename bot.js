@@ -30,7 +30,7 @@ bot.on("callback_query:data", async (ctx) => {
       ctx.chat.id,
       "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
       {
-        caption: "Selamat Datang di ChatBot Telegram!",
+        caption: "Ini informasi",
         parse_mode: "HTML",
         reply_markup: new InlineKeyboard()
           .text("Tentang", "about")
@@ -53,9 +53,9 @@ bot.on("callback_query:data", async (ctx) => {
         parse_mode: "HTML",
         reply_markup: new InlineKeyboard()
           .text("Informasi", "information")
-          .text("Tentang", "about")
+          .text("Menu", "menu")
           .row()
-          .text("Menu", "menu"),
+          .text("Kembali", "back"),
       }
     );
   }
@@ -79,7 +79,7 @@ bot.on("callback_query:data", async (ctx) => {
           .text("Informasi", "information")
           .text("Tentang", "about")
           .row()
-          .text("Menu", "menu"),
+          .text("Kembali", "back"),
       }
     );
   }
