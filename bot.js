@@ -40,6 +40,50 @@ bot.on("callback_query:data", async (ctx) => {
       }
     );
   }
+  if (data === "about") {
+    await ctx.api.deleteMessage(
+      ctx.chat.id,
+      ctx.callbackQuery.message.message_id
+    );
+    await ctx.api.sendPhoto(
+      ctx.chat.id,
+      "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
+      {
+        caption: "Ini tentang",
+        parse_mode: "HTML",
+        reply_markup: new InlineKeyboard()
+          .text("Informasi", "information")
+          .text("Tentang", "about")
+          .row()
+          .text("Menu", "menu"),
+      }
+    );
+  }
+  if (data === "menu") {
+    await ctx.api.deleteMessage(
+      ctx.chat.id,
+      ctx.callbackQuery.message.message_id
+    );
+    let menu = `Berikut menu:
+<code>siapa nama(saya/ku)</code>
+<code>/igdl (url)</code>
+<code>/tiktokdl (url)</code>
+    `;
+    await ctx.api.sendPhoto(
+      ctx.chat.id,
+      "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
+      {
+        caption: menu,
+        parse_mode: "HTML",
+        reply_markup: new InlineKeyboard()
+          .text("Informasi", "information")
+          .text("Tentang", "about")
+          .row()
+          .text("Menu", "menu"),
+      }
+    );
+  }
+
   if (data === "back") {
     await ctx.api.deleteMessage(
       ctx.chat.id,
