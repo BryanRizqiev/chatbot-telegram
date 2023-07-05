@@ -1,4 +1,4 @@
-const { dockStart } = require('@nlpjs/basic');
+const { dockStart } = require('@nlpjs/basic')
 
 const nlpFunc = async () => {
   const dock = await dockStart({
