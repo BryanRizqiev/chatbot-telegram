@@ -1,0 +1,171 @@
+{
+    "name": "Corpus",
+    "locale": "id-ID",
+    "data": [
+      {
+        "intent": "greetings",
+        "utterances": [
+          "Halo",
+          "Hai",
+          "Hey",
+          "Hay",
+          "Hi",
+          "Hy"
+        ],
+        "answers": [
+          "Halo! Ada yang bisa saya bantu?",
+          "Hai! Ada yang bisa saya bantu?"
+        ]
+      },      
+      {
+        "intent": "greetings.morning",
+        "utterances": [
+          "Selamat pagi",
+          "Pagi"
+        ],
+        "answers": [
+          "Selamat pagi! Ada yang bisa saya bantu?",
+          "Pagi! Ada yang bisa saya bantu?"
+        ]
+      },
+      {
+        "intent": "greetings.noon",
+        "utterances": [
+          "Selamat siang",
+          "Siang"
+        ],
+        "answers": [
+          "Selamat siang! Ada yang bisa saya bantu?",
+          "Siang! Ada yang bisa saya bantu?"
+        ]
+      },
+      {
+        "intent": "greetings.afternoon",
+        "utterances": [
+          "Selamat sore",
+          "Sore"
+        ],
+        "answers": [
+          "Selamat sore! Ada yang bisa saya bantu?",
+          "Sore! Ada yang bisa saya bantu?"
+        ]
+      },
+      {
+        "intent": "goodbye",
+        "utterances": [
+          "Sampai jumpa",
+          "Selamat tinggal",
+          "Dadah",
+          "Goodbye",
+          "Bye",
+          "See you later",
+          "Sampai jumpa lagi"
+        ],
+        "answers": [
+          "Sampai jumpa!",
+          "Selamat tinggal!",
+          "Dadah!",
+          "Goodbye!",
+          "Bye!",
+          "See you later!",
+          "Sampai jumpa lagi!"
+        ]
+      },
+      {
+        "intent": "thankyou",
+        "utterances": [
+          "Terima kasih",
+          "Makasih",
+          "Trimakasih",
+          "Thank you",
+          "Thanks",
+          "Terima kasih banyak",
+          "Terima kasih banyak-banyak"
+        ],
+        "answers": [
+          "Sama-sama, senang bisa membantu!",
+          "Sama-sama, dengan senang hati!",
+          "Sama-sama, semoga bisa membantu lain waktu!",
+          "You're welcome!",
+          "Terima kasih kembali!"
+        ]
+      },{
+        "intent": "informasi_kesehatan.body_health",
+        "utterances": [
+          "Bagaimana cara menjaga kesehatan tubuh?"
+        ],
+        "answers": [
+          "Untuk menjaga kesehatan tubuh, penting untuk mengonsumsi makanan seimbang, berolahraga secara teratur, dan tidur cukup."
+        ]
+      },{
+        "intent": "informasi_kesehatan.body_imune",
+        "utterances": [
+          "Apa yang harus saya lakukan untuk meningkatkan sistem kekebalan tubuh?"
+        ],
+        "answers": [
+          "Beberapa cara untuk meningkatkan sistem kekebalan tubuh adalah dengan mengonsumsi makanan bergizi, istirahat yang cukup, dan menjaga kebersihan diri."
+        ]
+      },{
+        "intent": "informasi_kesehatan.body_stress",
+        "utterances": [
+          "Bagaimana cara mengatasi stres?"
+        ],
+        "answers": [
+          "Untuk mengatasi stres, penting untuk beristirahat, mengelola waktu dengan baik, dan melakukan aktivitas yang menyenangkan seperti hobi atau olahraga."
+        ]
+      },{
+        "intent": "informasi_kesehatan.heart",
+        "utterances": [
+          "Apa saja makanan yang baik untuk kesehatan jantung?"
+        ],
+        "answers": [
+          "Makanan seperti ikan berlemak, kacang-kacangan, dan buah-buahan segar merupakan contoh makanan yang baik untuk kesehatan jantung."
+        ]
+      },{
+        "intent": "informasi_kesehatan.heart",
+        "utterances": [
+          "Apa manfaat olahraga bagi kesehatan?",
+          "Apa kegunaan olahraga bagi kesehatan?"
+        ],
+        "answers": [
+          "Olahraga secara rutin memiliki banyak manfaat bagi kesehatan, seperti meningkatkan kondisi jantung, mengurangi risiko penyakit, dan meningkatkan energi dan suasana hati."
+        ]
+      },{
+        "intent": "whatTimeIsIt",
+        "utterances": [
+            "Sekarang jam berapa"
+        ],
+        "answers": [
+            "Sekarang jam {{ time }}."
+        ],
+        "actions": [
+            {
+                "name": "handleWhatsTimeAction",
+                "parameters": [
+                    "id-ID"
+                ]
+            }
+        ]
+      },{
+        "intent": "apa_kabar",
+        "utterances": [
+            "Apa kabar ?",
+            "Bagaimana kabarmu ?"
+        ],
+        "answers": [
+            "Baik - baik saja, kalau kamu ?",
+            "Cukup baik, kalau kamu?"
+        ]
+      },{
+        "intent": "apa_yang_kamu_lakukan",
+        "utterances": [
+            "Apa kabar ?",
+            "Bagaimana kabarmu ?"
+        ],
+        "answers": [
+            "Baik - baik saja, kalau kamu ?",
+            "Cukup baik, kalau kamu?"
+        ]
+      }
+    ]
+}

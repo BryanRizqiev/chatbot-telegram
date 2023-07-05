@@ -2,10 +2,14 @@ require("dotenv").config();
 const { Bot, InputFile, InlineKeyboard } = require("grammy");
 const { limit } = require("@grammyjs/ratelimiter");
 const { run } = require("@grammyjs/runner");
-const axios = require("axios");
 
-const { api, bot_token } = process.env;
-const { removePrefix } = require("./functions.js");
+const { bot_token } = process.env;
+const nlpFunc = require("./index.js");
+let theFunc;
+
+(async () => {
+  theFunc = await nlpFunc
+})()
 
 const bot = new Bot(bot_token);
 
@@ -28,7 +32,7 @@ bot.on("callback_query:data", async (ctx) => {
     );
     await ctx.api.sendPhoto(
       ctx.chat.id,
-      "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
+      "./logounp.jpg",
       {
         caption: "Ini informasi",
         parse_mode: "HTML",
@@ -47,7 +51,7 @@ bot.on("callback_query:data", async (ctx) => {
     );
     await ctx.api.sendPhoto(
       ctx.chat.id,
-      "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
+      "./logounp.jpg",
       {
         caption: "Ini tentang",
         parse_mode: "HTML",
@@ -65,13 +69,13 @@ bot.on("callback_query:data", async (ctx) => {
       ctx.callbackQuery.message.message_id
     );
     let menu = `Berikut menu:
-<code>siapa nama(saya/ku)</code>
+<code>siapa nama (saya/ku)</code>
 <code>/igdl (url)</code>
 <code>/tiktokdl (url)</code>
     `;
     await ctx.api.sendPhoto(
       ctx.chat.id,
-      "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
+      "./logounp.jpg",
       {
         caption: menu,
         parse_mode: "HTML",
@@ -91,7 +95,7 @@ bot.on("callback_query:data", async (ctx) => {
     );
     await ctx.api.sendPhoto(
       ctx.chat.id,
-      "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
+      "./logounp.jpg",
       {
         caption: "Selamat Datang di ChatBot Telegram!",
         parse_mode: "HTML",
@@ -106,30 +110,7 @@ bot.on("callback_query:data", async (ctx) => {
 });
 
 bot.command("start", limits, (ctx) => {
-  ctx.api.sendPhoto(
-    ctx.chat.id,
-    "https://0312arifsofanudin.files.wordpress.com/2013/06/logounp.jpg",
-    {
-      caption: "Selamat Datang di ChatBot Telegram!",
-      reply_to_message_id: ctx.message.message_id,
-      parse_mode: "HTML",
-      reply_markup: new InlineKeyboard()
-        .text("Informasi", "information")
-        .text("Tentang", "about")
-        .row()
-        .text("Menu", "menu"),
-    }
-  );
-});
-
-bot.hears(/^siapa nama(?:\s)?(saya|ku)$/i, limits, (ctx) => {
-  let { first_name: fname, last_name: lname } = ctx.message.from;
-  lname = lname !== undefined ? lname : "";
-  let name = fname + " " + lname;
-  ctx.reply("Nama kamu adalah " + name, {
-    reply_to_message_id: ctx.message.message_id,
-    parse_mode: "HTML",
-  });
+  ctx.api.sendMessage(ctx.message.chat.id, "Selamat datang di Chat-Bot")
 });
 
 bot.command("tiktokdl", limits, async (ctx) => {
@@ -196,7 +177,11 @@ bot.command("igdl", limits, async (ctx) => {
   }
 });
 
-bot.command("tr", async (ctx) => {});
+bot.on("message", async (context) => {
+  let message = await theFunc(context.message.text)
+  message = !message.answer ? "Maaf, saya tidak tahu" : message.answer
+  bot.api.sendMessage(context.message.chat.id, message)
+})
 
 console.log("BOT STARTED");
 run(bot);
